@@ -1,0 +1,12 @@
+# Demo 1 — Microsoft Agent Governance Toolkit
+agent-governance-toolkit==4.1.0
+mcp>=1.30,<2          # mcp 2.x mengganti FastMCP -> MCPServer
+prov                  # W3C PROV-DM (Adegan 9)
+matplotlib            # gambar graf PROV
+rich
+
+# Demo 2 — NeMo Guardrails (Adegan 4 butuh OPENAI_API_KEY)
+nemoguardrails==0.24.1
+
+# Demo 4 — Osprey dipasang terpisah sebagai uv tool:
+#   uv tool install osprey-framework==2026.6.2

@@ -1,0 +1,212 @@
+{
+  "showThinkingSummaries": true,
+  "outputStyle": ".claude/output-styles/control-operator.md",
+  "statusLine": {
+    "type": "command",
+    "command": "python \"$CLAUDE_PROJECT_DIR/.claude/statusline.py\""
+  },
+  "_PROMPT_PROVIDER_NOTE": "Permissions policy: allow/deny/ask lists. Framework defaults merged with facility overrides from claude_code.permissions config.",
+  "enableAllProjectMcpServers": true,
+  "permissions": {
+    "allow": [      "Read(_agent_data/**)",
+      "Read(_agent_data/data/**)",
+      "Read(_agent_data/plots/**)",
+      "Read(_agent_data/results/**)",
+      "mcp__controls__channel_limits",
+      "mcp__osprey_workspace__facility_description",
+      "mcp__osprey_workspace__screenshot_capture",
+      "mcp__osprey_workspace__list_windows",
+      "mcp__osprey_workspace__manage_window",
+      "mcp__osprey_workspace__submit_response",
+      "mcp__osprey_workspace__data_list",
+      "mcp__osprey_workspace__data_read",
+      "mcp__osprey_workspace__data_delete",
+      "mcp__osprey_workspace__artifact_get",
+      "mcp__osprey_workspace__artifact_focus",
+      "mcp__osprey_workspace__artifact_export",
+      "mcp__osprey_workspace__create_static_plot",
+      "mcp__osprey_workspace__create_interactive_plot",
+      "mcp__osprey_workspace__create_dashboard",
+      "mcp__osprey_workspace__create_document",
+      "mcp__osprey_workspace__artifact_save",
+      "mcp__osprey_workspace__artifact_delete",
+      "mcp__osprey_workspace__artifact_delete_all",
+      "mcp__osprey_workspace__session_log",
+      "mcp__osprey_workspace__session_summary",
+      "mcp__osprey_workspace__archiver_downsample",
+      "mcp__osprey_workspace__setup_inspect",
+      "mcp__osprey_workspace__lattice_init",
+      "mcp__osprey_workspace__lattice_state",
+      "mcp__osprey_workspace__lattice_set_param",
+      "mcp__osprey_workspace__lattice_refresh",
+      "mcp__osprey_workspace__lattice_set_baseline",
+      "mcp__osprey_workspace__list_panels",
+      "mcp__osprey_workspace__switch_panel",
+      "mcp__osprey_facility_knowledge__capabilities",
+      "mcp__osprey_facility_knowledge__list_concepts",
+      "mcp__osprey_facility_knowledge__read_concept",
+      "mcp__osprey_facility_knowledge__search",
+      "NotebookEdit(_agent_data/artifacts/**)"
+    ],"deny": [
+      "Bash",
+      "Edit",
+      "WebFetch",
+      "WebSearch",
+      "mcp__plugin_playwright_playwright__*",
+      "mcp__plugin_context7_context7__*",
+      "mcp__controls__channel_write"
+    ],
+    "ask": [      "mcp__controls__channel_write",
+      "mcp__osprey_workspace__setup_patch",
+      "mcp__osprey_facility_knowledge__draft_concept"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/osprey_config_drift.py\" 2>/dev/null || true",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/osprey_panels_context.py\" 2>/dev/null || true",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/osprey_focus_validate.py\" 2>/dev/null || true",
+            "timeout": 2
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "mcp__controls__channel_write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"%APPDATA%\\uv\\tools\\osprey-framework\\Scripts\\python.exe\" \"$CLAUDE_PROJECT_DIR/.claude/hooks/osprey_writes_check.py\"",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "\"%APPDATA%\\uv\\tools\\osprey-framework\\Scripts\\python.exe\" \"$CLAUDE_PROJECT_DIR/.claude/hooks/osprey_limits.py\"",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "\"%APPDATA%\\uv\\tools\\osprey-framework\\Scripts\\python.exe\" \"$CLAUDE_PROJECT_DIR/.claude/hooks/osprey_approval.py\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__controls__channel_read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"%APPDATA%\\uv\\tools\\osprey-framework\\Scripts\\python.exe\" \"$CLAUDE_PROJECT_DIR/.claude/hooks/osprey_approval.py\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__controls__archiver_read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"%APPDATA%\\uv\\tools\\osprey-framework\\Scripts\\python.exe\" \"$CLAUDE_PROJECT_DIR/.claude/hooks/osprey_approval.py\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__python__execute",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"%APPDATA%\\uv\\tools\\osprey-framework\\Scripts\\python.exe\" \"$CLAUDE_PROJECT_DIR/.claude/hooks/osprey_writes_check.py\"",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "\"%APPDATA%\\uv\\tools\\osprey-framework\\Scripts\\python.exe\" \"$CLAUDE_PROJECT_DIR/.claude/hooks/osprey_approval.py\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__osprey_workspace__setup_patch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"%APPDATA%\\uv\\tools\\osprey-framework\\Scripts\\python.exe\" \"$CLAUDE_PROJECT_DIR/.claude/hooks/osprey_approval.py\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__osprey_facility_knowledge__draft_concept",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"%APPDATA%\\uv\\tools\\osprey-framework\\Scripts\\python.exe\" \"$CLAUDE_PROJECT_DIR/.claude/hooks/osprey_approval.py\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "mcp__controls__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"%APPDATA%\\uv\\tools\\osprey-framework\\Scripts\\python.exe\" \"$CLAUDE_PROJECT_DIR/.claude/hooks/osprey_error_guidance.py\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__python__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"%APPDATA%\\uv\\tools\\osprey-framework\\Scripts\\python.exe\" \"$CLAUDE_PROJECT_DIR/.claude/hooks/osprey_error_guidance.py\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__osprey_workspace__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"%APPDATA%\\uv\\tools\\osprey-framework\\Scripts\\python.exe\" \"$CLAUDE_PROJECT_DIR/.claude/hooks/osprey_error_guidance.py\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__osprey_facility_knowledge__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"%APPDATA%\\uv\\tools\\osprey-framework\\Scripts\\python.exe\" \"$CLAUDE_PROJECT_DIR/.claude/hooks/osprey_error_guidance.py\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

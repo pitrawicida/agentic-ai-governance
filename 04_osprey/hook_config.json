@@ -1,0 +1,4 @@
+{
+  "write_tools": ["mcp__controls__channel_write", "mcp__python__execute"],
+  "approval_prefixes": ["mcp__controls__", "mcp__python__", "mcp__osprey_workspace__"]
+}

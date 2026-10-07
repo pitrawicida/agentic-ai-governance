@@ -1,0 +1,191 @@
+# ============================================================
+# my-first-agent Configuration
+# ============================================================
+# Hello World — Minimal MCP + Mock Control System
+# One MCP server, zero complexity.
+# ============================================================
+
+# Project identity
+project_name: "my-first-agent"
+
+build_dir: ./build
+
+# Root directory (absolute path)
+project_root: C:\path\to\perisai-demo-pendahulu\04_osprey\my-first-agent
+
+# ============================================================
+# API CONFIGURATION
+# ============================================================
+# API keys and endpoints for LLM providers
+
+api:
+  providers:
+    cborg:
+      api_key: ${CBORG_API_KEY}
+      base_url: https://api.cborg.lbl.gov/v1
+      models:                        # Model IDs as named by this provider
+        haiku: claude-haiku-4-5
+        sonnet: claude-sonnet-4-6
+        opus: claude-opus-4-7
+    amsc-i2:
+      api_key: ${AMSC_I2_API_KEY}
+      base_url: https://api.i2-core.american-science-cloud.org/v1
+      models:                        # Model IDs as named by this provider
+        haiku: claude-haiku
+        sonnet: claude-sonnet
+        opus: claude-opus
+    stanford:
+      api_key: ${STANFORD_API_KEY}
+      base_url: https://aiapi-prod.stanford.edu/v1
+    openai:
+      api_key: ${OPENAI_API_KEY}
+      base_url: https://api.openai.com/v1
+    anthropic:
+      api_key: ${ANTHROPIC_API_KEY}
+      base_url: https://api.anthropic.com
+      models:
+        haiku: claude-haiku-4-5-20251001
+        sonnet: claude-sonnet-4-5-20250929
+        opus: claude-opus-4-6
+    google:
+      api_key: ${GOOGLE_API_KEY}
+      base_url: https://generativelanguage.googleapis.com/v1beta
+    ollama:
+      api_key: ollama
+      base_url: ${OLLAMA_HOST:-http://localhost:11434}
+      host: localhost
+      port: 11434
+    argo:
+      api_key: ${ARGO_API_KEY}
+      base_url: https://argo-bridge.cels.anl.gov
+    als-apg:
+      api_key: ${ALS_APG_API_KEY}
+      base_url: https://llm.gianlucamartino.com/v1
+      models:
+        haiku: claude-haiku-4-5-20251001
+        sonnet: claude-sonnet-4-6
+        opus: claude-opus-4-6
+    # DwarfStar (ds4) — local DeepSeek V4 server (https://github.com/antirez/ds4)
+    # No API key required. If the server runs on a remote host, forward the port:
+    #   ssh -L 8000:127.0.0.1:8000 <host>
+    ds4:
+      api_key: EMPTY                  # ds4 ignores auth; any non-empty string works
+      base_url: http://127.0.0.1:8000/v1
+      # ds4 serves two model sizes; mapped onto the standard tiers so ds4 is a
+      # drop-in (flash = fast/cheap tier, pro = capable tiers).
+      models:
+        haiku: deepseek-v4-flash
+        sonnet: deepseek-v4-pro
+        opus: deepseek-v4-pro
+
+# ============================================================
+# ENVIRONMENT VARIABLES
+# ============================================================
+# Set these in your .env file:
+#
+#   ANTHROPIC_API_KEY=sk-ant-...
+#   TZ=UTC
+
+# ============================================================
+# CONTROL SYSTEM CONFIGURATION
+# ============================================================
+# Mock mode: works instantly with any channel names (no hardware required)
+# Production mode: change type to 'epics' and configure the connector
+#
+# Migration to production:
+# 1. Change control_system.type from 'mock' to 'epics'
+# 2. Configure connector.epics with your gateway addresses
+# 3. Your code doesn't need to change!
+
+control_system:
+  type: mock  # <-- Change to 'epics' for production
+
+  # Write Access Control - Master safety switch
+  # When false, ALL writes are blocked (hard error, non-configurable)
+  writes_enabled: false  # Tutorial default: read-only
+                         # Set to true to explore the human approval flow
+
+  # Runtime Channel Limits Checking
+  limits_checking:
+    enabled: true
+    database_path: "data/channel_limits.json"
+    allow_unlisted_channels: true  # Permissive mode for tutorial
+
+  # Runtime connector settings
+  connector:
+    timeout: 5.0  # Default timeout in seconds
+
+# ============================================================
+# HUMAN-IN-THE-LOOP APPROVAL
+# ============================================================
+# Per-tool approval policies enforced by the osprey_approval PreToolUse hook.
+# default_policy is fail-closed ("always"): any tool not listed here will
+# require approval, so reads need an explicit "skip" entry.
+
+approval:
+  enabled: true
+  default_policy: "always"        # Fail-closed: unknown tools require approval
+  tools:
+    channel_write: always          # Always prompt for hardware writes
+    channel_read: skip             # Read-only, no approval needed
+    channel_limits: skip           # Read-only safety metadata, no approval needed
+    archiver_read: skip            # Historical data, no approval needed
+    execute: selective             # Content-aware: checks write patterns + exec mode
+    setup_patch: always            # Config mutation needs approval
+    entry_create: always           # ARIEL logbook write
+
+# ============================================================
+# EXECUTION INFRASTRUCTURE
+# ============================================================
+
+execution:
+  execution_method: "local"
+  python_env_path: %APPDATA%\uv\tools\osprey-framework\Scripts\python.exe
+
+# ============================================================
+# SYSTEM CONFIGURATION
+# ============================================================
+
+system:
+  # Pinned to UTC for reproducibility — set your real facility zone in
+  # production. Avoid ${TZ:-...}: inheriting the host $TZ makes archiver
+  # queries and simulated events non-deterministic. Governs how the agent
+  # interprets operator times and renders all timestamps.
+  timezone: UTC
+
+file_paths:
+  agent_data_dir: _agent_data
+  executed_python_scripts_dir: executed_scripts
+  user_memory_dir: user_memory
+  api_calls_dir: api_calls
+
+# ============================================================
+# WORKSPACE & ARTIFACT GALLERY
+# ============================================================
+
+workspace:
+  base_dir: "./osprey-workspace"
+
+artifact_server:
+  host: "127.0.0.1"
+  port: 8086
+  auto_launch: true
+
+# ============================================================
+# CLAUDE CODE INTEGRATION
+# ============================================================
+# Only the controls MCP server is enabled for this minimal template.
+
+claude_code:
+  servers:
+    controls: {enabled: true}
+    ariel: {enabled: false}
+    channel-finder: {enabled: false}
+  agents:
+    logbook-search: {enabled: false}
+    logbook-deep-research: {enabled: false}
+  provider: anthropic
+  default_model: claude-haiku-4-5
+scaffold:
+  user_owned:
+  - rules/facility

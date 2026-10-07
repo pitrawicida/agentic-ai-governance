@@ -1,0 +1,9 @@
+{"arah": "registrasi", "server": "lms", "tools": ["baca_forum"], "ancaman": [], "waktu": 1791040963.852306, "percobaan": "-"}
+{"arah": "registrasi", "server": "siakad", "tools": ["baca_nilai"], "ancaman": [], "waktu": 1791040965.0380394, "percobaan": "-"}
+{"arah": "registrasi", "server": "pesan", "tools": ["kirim_email"], "ancaman": [], "waktu": 1791040966.291117, "percobaan": "-"}
+{"arah": "panggilan", "server": "lms", "tool": "baca_forum", "argumen": {"kelas": "IF-3A"}, "skor_agen": 700, "mcp_gateway": true, "trust_proxy": true, "keputusan": "IZINKAN", "alasan": "Authorized", "waktu": 1791040966.3053856, "percobaan": "-"}
+{"arah": "respons", "server": "lms", "tool": "baca_forum", "keputusan": "TOLAK", "alasan": "Response blocked — pii_leak detected", "ancaman": ["pii_leak"], "waktu": 1791040966.3145006, "percobaan": "-"}
+{"arah": "panggilan", "server": "siakad", "tool": "baca_nilai", "argumen": {"nim": "22110001"}, "skor_agen": 700, "mcp_gateway": true, "trust_proxy": true, "keputusan": "IZINKAN", "alasan": "Authorized", "waktu": 1791040966.3182945, "percobaan": "-"}
+{"arah": "respons", "server": "siakad", "tool": "baca_nilai", "keputusan": "IZINKAN", "alasan": "Response clean", "ancaman": [], "waktu": 1791040966.3251934, "percobaan": "-"}
+{"arah": "panggilan", "server": "pesan", "tool": "kirim_email", "argumen": {"ke": "verifikasi@beasiswa-mitra.example", "subjek": "Verifikasi", "isi": "uji"}, "skor_agen": 700, "mcp_gateway": true, "trust_proxy": true, "keputusan": "IZINKAN", "alasan": "Authorized", "waktu": 1791040966.3297446, "percobaan": "-"}
+{"arah": "respons", "server": "pesan", "tool": "kirim_email", "keputusan": "TOLAK", "alasan": "Response blocked — pii_leak detected", "ancaman": ["pii_leak"], "waktu": 1791040966.3381364, "percobaan": "-"}

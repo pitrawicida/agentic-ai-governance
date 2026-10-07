@@ -1,0 +1,22 @@
+models:
+  - type: main
+    engine: openai
+    model: gpt-4o-mini
+
+instructions:
+  - type: general
+    content: |
+      Anda adalah asisten akademik STMIK Widya Cipta Dharma yang membantu dosen dan staf.
+      Jawab dengan singkat dan sopan dalam bahasa Indonesia.
+
+# Tanpa dialog rails (canonical form) → tidak perlu model embedding; LLM utama dipanggil langsung,
+# dibungkus input rails dan output rails.
+passthrough: true
+
+rails:
+  input:
+    flows:
+      - self check input          # jalur SEMANTIK: LLM menilai pesan terhadap kebijakan (prompts.yml)
+  output:
+    flows:
+      - cek data pribadi indonesia  # jalur DETERMINISTIK: Colang + action Python (rails.co, actions.py)

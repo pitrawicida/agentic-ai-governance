@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "controls": {"args": ["-m", "osprey.mcp_server.control_system"], "command": "%APPDATA%\\uv\\tools\\osprey-framework\\Scripts\\python.exe", "env": {"CONFIG_FILE": "C:\\path\\to\\perisai-demo-pendahulu\\04_osprey\\my-first-agent/config.yml", "EPICS_CA_ADDR_LIST": "${EPICS_CA_ADDR_LIST:-}", "OSPREY_CONFIG": "C:\\path\\to\\perisai-demo-pendahulu\\04_osprey\\my-first-agent/config.yml"}},
+    "python": {"args": ["-m", "osprey.mcp_server.python_executor"], "command": "%APPDATA%\\uv\\tools\\osprey-framework\\Scripts\\python.exe", "env": {"CONFIG_FILE": "C:\\path\\to\\perisai-demo-pendahulu\\04_osprey\\my-first-agent/config.yml", "OSPREY_CONFIG": "C:\\path\\to\\perisai-demo-pendahulu\\04_osprey\\my-first-agent/config.yml"}},
+    "osprey_workspace": {"args": ["-m", "osprey.mcp_server.workspace"], "command": "%APPDATA%\\uv\\tools\\osprey-framework\\Scripts\\python.exe", "env": {"CONFIG_FILE": "C:\\path\\to\\perisai-demo-pendahulu\\04_osprey\\my-first-agent/config.yml", "OSPREY_CONFIG": "C:\\path\\to\\perisai-demo-pendahulu\\04_osprey\\my-first-agent/config.yml"}},
+    "osprey_facility_knowledge": {"args": ["-m", "osprey.mcp_server.facility_knowledge"], "command": "%APPDATA%\\uv\\tools\\osprey-framework\\Scripts\\python.exe", "env": {"OSPREY_CONFIG": "C:\\path\\to\\perisai-demo-pendahulu\\04_osprey\\my-first-agent/config.yml"}}
+  }
+}

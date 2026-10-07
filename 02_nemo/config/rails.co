@@ -1,0 +1,15 @@
+# Output rail deterministik: respons bot tidak boleh memuat pola data pribadi Indonesia.
+# Ditulis dalam Colang (DSL NeMo) — kebijakan yang dapat dibaca dan diaudit manusia.
+
+define subflow cek data pribadi indonesia
+  $temuan = execute cek_data_pribadi(teks=$bot_message)
+  if $temuan
+    bot tolak data pribadi
+    stop
+
+# Pesan penolakan bawaan NeMo (dipakai input rail) diganti ke bahasa Indonesia.
+define bot refuse to respond
+  "Maaf, permintaan ini tidak dapat diproses karena melanggar kebijakan pelindungan data kampus."
+
+define bot tolak data pribadi
+  "Maaf, jawaban ditahan karena memuat data pribadi yang dilindungi UU 27/2022 tentang Pelindungan Data Pribadi."

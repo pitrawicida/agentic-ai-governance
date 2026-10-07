@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.2.0",
+  "creation": {
+    "osprey_version": "2026.6.2",
+    "timestamp": "2026-10-04T04:27:19.600304+00:00",
+    "template": "hello-world",
+    "data_bundle": "hello_world",
+    "claude_code_only": true
+  },
+  "build_args": {
+    "project_name": "my-first-agent",
+    "source": "preset",
+    "data_bundle": "hello_world",
+    "preset": "hello-world",
+    "provider": "anthropic",
+    "model": "claude-haiku-4-5"
+  },
+  "reproducible_command": "osprey build my-first-agent --preset hello-world --set provider=anthropic --set model=claude-haiku-4-5",
+  "file_checksums": {
+    ".dockerignore": "sha256:49e3a29b24399eb02b49cdfebf55c8ccf833141fddf58f5b8e1aed50fd738f48",
+    ".mcp.json": "sha256:18906ea3202885e5af1f45d8c23973770a99bda2382ff7a273d874f83b140699",
+    "CLAUDE.md": "sha256:682ceb248a43c02134cf227228dd8e2bb3798233c2041c3a80a51e246c028578",
+    "config.yml": "sha256:2aeff0ff20bb6f44b008b0e05db75e96b8990fdc05d75a08aee0970810e277ed",
+    "Dockerfile": "sha256:c77ee3f06b6360f98d8235b4d2b15303211c082850c97bdc81fe042bfc193391",
+    "README.md": "sha256:de2dbc978324085a681eb36c074e38b264e177a0c534012698f78af20d49919b",
+    ".claude\\settings.json": "sha256:7b2a8976c625e308ee9f5b52c5289f627320b77c22f4d142627b5067224a81ba",
+    ".claude\\statusline.py": "sha256:a23c082f3a3a0363787938ad7d746dd70cc9491665d3fea01ea23b6b80f5cd5b",
+    "services\\docker-compose.yml.j2": "sha256:9d90b825dbe682df324106b25f3e60a22015ef5b924650825792c33b381661b6"
+  },
+  "artifacts": {
+    "hooks": [
+      "hook-log",
+      "hook-config",
+      "error-guidance",
+      "writes-check",
+      "approval",
+      "limits",
+      "config-drift"
+    ],
+    "rules": [
+      "safety",
+      "error-handling",
+      "facility",
+      "timezone"
+    ],
+    "output_styles": [
+      "control-operator"
+    ]
+  }
+}
